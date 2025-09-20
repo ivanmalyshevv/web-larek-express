@@ -3,10 +3,10 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import path from 'path';
 import dotenv from 'dotenv';
+import { errors } from 'celebrate';
 import errorHandler from './middlewares/error-handler';
 import productRouter from './routes/product';
 import orderRouter from './routes/order';
-import { errors } from 'celebrate';
 import { errorLogger, requestLogger } from './middlewares/logger';
 
 dotenv.config();

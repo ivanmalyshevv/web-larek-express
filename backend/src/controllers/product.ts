@@ -4,7 +4,6 @@ import Product from '../models/product';
 import BadRequestError from '../errors/bad-request-error';
 import ConflictError from '../errors/conflict-error';
 
-
 export const getProducts = (_req: Request, res: Response, next: NextFunction) => {
   Product.find({})
     .then((products) => Product.countDocuments()
