@@ -36,7 +36,7 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
     if (!email || !phone || !address) {
       return res.status(400).json({ message: 'Не все поля заполнены' });
     }
-    res.status(201).json({ id: faker.string.uuid(), total });
+  return res.status(201).json({ id: faker.string.uuid(), total });
   } catch (error) {
     next(error);
   }
