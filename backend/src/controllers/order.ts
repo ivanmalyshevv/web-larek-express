@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { faker } from '@faker-js/faker';
 import Product from '../models/product';
+import BadRequestError from '../errors/bad-request-error';
 
 const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -10,9 +11,7 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
 
     // Проверка массива товаров
     if (!Array.isArray(items) || items.length === 0) {
-      return res
-        .status(400)
-        .json({ message: 'Массив товаров пуст или не передан' });
+      return next(new BadRequestError('Массив товаров пуст или не передан'));
     }
 
     // Поиск товаров в базе данных
@@ -23,9 +22,7 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
 
     // Проверка корректности товаров
     if (products.length !== items.length) {
-      return res
-        .status(400)
-        .json({ message: 'Некорректные товары или цена отсутствует' });
+      return next(new BadRequestError('Некорректные товары или цена отсутствует'));
     }
 
     // Расчет суммы заказа
@@ -36,19 +33,17 @@ const createOrder = async (req: Request, res: Response, next: NextFunction) => {
 
     // Проверка соответствия суммы
     if (sum !== total) {
-      return res
-        .status(400)
-        .json({ message: 'Сумма заказа не совпадает с total' });
+      return next(new BadRequestError('Сумма заказа не совпадает с total'));
     }
 
     // Проверка способа оплаты
     if (!['card', 'online'].includes(payment)) {
-      return res.status(400).json({ message: 'Некорректный способ оплаты' });
+      return next(new BadRequestError('Некорректный способ оплаты'));
     }
 
     // Проверка обязательных полей
     if (!email || !phone || !address) {
-      return res.status(400).json({ message: 'Не все поля заполнены' });
+      return next(new BadRequestError('Не все поля заполнены'));
     }
 
     // Успешное создание заказа

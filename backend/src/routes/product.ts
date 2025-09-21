@@ -5,6 +5,6 @@ import { productValidation } from '../middlewares/validation';
 const router = Router();
 
 router.get('/', getProducts);
-router.post('/', createProduct, productValidation);
+router.post('/', productValidation, createProduct);
 
 export default router;
